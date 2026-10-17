@@ -1,0 +1,1744 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LESSA | DJ & Producer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #030303;
+            --text: #ffffff;
+            --blue: #0055ff;
+            --blue-light: #4d94ff;
+            --blue-glow: rgba(0, 85, 255, 0.6);
+            --blue-glow-strong: rgba(0, 85, 255, 0.9);
+            --gray: #888888;
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            position: relative;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 80px 80px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .cursor-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(0, 85, 255, 0.08) 0%, rgba(0, 85, 255, 0.03) 30%, transparent 70%);
+            pointer-events: none;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.5s ease;
+            opacity: 0;
+            mix-blend-mode: screen;
+        }
+        body:hover .cursor-glow { opacity: 1; }
+
+        h1, h2, h3, .logo, .section-title {
+            font-family: 'Syne', sans-serif;
+            text-transform: uppercase;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
+        video { display: block; }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 5%;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        .logo-container { display: flex; align-items: center; gap: 18px; }
+        .logo { font-size: 24px; font-weight: 800; letter-spacing: 4px; }
+
+        /* =============================================== */
+        /* ============= BURACO NEGRO PREMIUM ============= */
+        /* =============================================== */
+        .bh {
+            width: 90px;
+            height: 90px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            perspective: 400px;
+        }
+        .bh:hover { transform: scale(1.08); }
+
+        /* 1. GLOW EXTERNO */
+        .bh-glow {
+            position: absolute;
+            inset: -20px;
+            background: radial-gradient(circle at center,
+                rgba(0, 140, 255, 0.4) 0%,
+                rgba(0, 100, 255, 0.15) 35%,
+                rgba(100, 0, 255, 0.05) 60%,
+                transparent 80%);
+            filter: blur(8px);
+            animation: bh-glow-pulse 4s ease-in-out infinite;
+            z-index: 0;
+        }
+        @keyframes bh-glow-pulse {
+            0%, 100% { opacity: 0.75; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.08); }
+        }
+
+        /* 2. DISCO BASE TRASEIRO (estático, escuro) */
+        .bh-disk-back {
+            position: absolute;
+            width: 88px;
+            height: 12px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(ellipse at center,
+                rgba(0, 200, 255, 0.35) 0%,
+                rgba(0, 100, 255, 0.15) 45%,
+                rgba(80, 0, 200, 0.08) 70%,
+                transparent 90%);
+            border-radius: 50%;
+            filter: blur(3px);
+            z-index: 1;
+        }
+
+        /* 3. CORRENTES DE LUZ ORBITANDO */
+        .bh-stream {
+            position: absolute;
+            width: 86px;
+            height: 86px;
+            top: 50%; left: 50%;
+            border-radius: 50%;
+            transform: translate(-50%, -50%) scaleY(0.13);
+            transform-origin: center center;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .bh-stream-1 {
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                transparent 180deg,
+                rgba(80, 0, 200, 0.15) 220deg,
+                rgba(0, 100, 255, 0.5) 260deg,
+                rgba(0, 180, 255, 0.85) 300deg,
+                rgba(150, 240, 255, 1) 335deg,
+                rgba(255, 255, 255, 1) 350deg,
+                rgba(150, 240, 255, 0.5) 358deg,
+                transparent 360deg
+            );
+            filter: blur(2.5px);
+            z-index: 2;
+            animation: bh-stream-cw 7s linear infinite;
+        }
+
+        .bh-stream-2 {
+            background: conic-gradient(
+                from 180deg,
+                transparent 0deg,
+                transparent 180deg,
+                rgba(80, 0, 200, 0.12) 220deg,
+                rgba(0, 100, 255, 0.4) 260deg,
+                rgba(0, 180, 255, 0.75) 300deg,
+                rgba(150, 240, 255, 0.95) 335deg,
+                rgba(255, 255, 255, 1) 350deg,
+                rgba(150, 240, 255, 0.4) 358deg,
+                transparent 360deg
+            );
+            filter: blur(2px);
+            z-index: 5;
+            animation: bh-stream-ccw 11s linear infinite;
+        }
+
+        @keyframes bh-stream-cw {
+            from { transform: translate(-50%, -50%) scaleY(0.13) rotate(0deg); }
+            to { transform: translate(-50%, -50%) scaleY(0.13) rotate(360deg); }
+        }
+
+        @keyframes bh-stream-ccw {
+            from { transform: translate(-50%, -50%) scaleY(0.13) rotate(360deg); }
+            to { transform: translate(-50%, -50%) scaleY(0.13) rotate(0deg); }
+        }
+
+        /* 4. LENTE GRAVITACIONAL - ARCO SUPERIOR */
+        .bh-lens-arc-top {
+            position: absolute;
+            width: 48px;
+            height: 24px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -78%);
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            border-top: 2px solid transparent;
+            border-top-color: rgba(180, 240, 255, 0.95);
+            border-left: 2px solid transparent;
+            border-right: 2px solid transparent;
+            filter: blur(0.6px);
+            box-shadow: 
+                0 -6px 14px -2px rgba(0, 200, 255, 0.85),
+                0 -3px 8px rgba(0, 150, 255, 0.6);
+            z-index: 6;
+            pointer-events: none;
+            animation: bh-lens-arc-top-pulse 3s ease-in-out infinite alternate;
+        }
+        @keyframes bh-lens-arc-top-pulse {
+            0% { opacity: 0.75; transform: translate(-50%, -78%) scaleX(0.95); }
+            100% { opacity: 1; transform: translate(-50%, -78%) scaleX(1.05); }
+        }
+
+        /* 5. LENTE GRAVITACIONAL - ARCO INFERIOR */
+        .bh-lens-arc-bottom {
+            position: absolute;
+            width: 48px;
+            height: 24px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -22%);
+            border-radius: 0 0 50% 50% / 0 0 100% 100%;
+            border-bottom: 2px solid transparent;
+            border-bottom-color: rgba(180, 240, 255, 0.95);
+            border-left: 2px solid transparent;
+            border-right: 2px solid transparent;
+            filter: blur(0.6px);
+            box-shadow: 
+                0 6px 14px -2px rgba(0, 200, 255, 0.85),
+                0 3px 8px rgba(0, 150, 255, 0.6);
+            z-index: 6;
+            pointer-events: none;
+            animation: bh-lens-arc-bottom-pulse 3s ease-in-out infinite alternate;
+        }
+        @keyframes bh-lens-arc-bottom-pulse {
+            0% { opacity: 0.75; transform: translate(-50%, -22%) scaleX(0.95); }
+            100% { opacity: 1; transform: translate(-50%, -22%) scaleX(1.05); }
+        }
+
+        /* 6. LENTE GRAVITACIONAL - ANEL VERTICAL */
+        .bh-lens {
+            position: absolute;
+            width: 52px;
+            height: 52px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 1.5px solid transparent;
+            border-top-color: rgba(140, 220, 255, 0.9);
+            border-bottom-color: rgba(140, 220, 255, 0.9);
+            border-left-color: rgba(80, 180, 255, 0.3);
+            border-right-color: rgba(80, 180, 255, 0.3);
+            filter: blur(0.5px);
+            box-shadow: 
+                0 -8px 14px -4px rgba(0, 180, 255, 0.7),
+                0 8px 14px -4px rgba(0, 180, 255, 0.7);
+            animation: bh-lens-pulse 3s ease-in-out infinite alternate;
+            z-index: 3;
+        }
+        @keyframes bh-lens-pulse {
+            0% { opacity: 0.65; }
+            100% { opacity: 1; }
+        }
+
+        /* 7. HORIZONTE DE EVENTOS */
+        .bh-core {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: #000;
+            border-radius: 50%;
+            z-index: 4;
+            box-shadow: 
+                inset 0 0 10px rgba(0, 0, 0, 1),
+                0 0 15px 2px rgba(0, 0, 0, 1);
+        }
+
+        /* 8. ANEL DE FÓTONS */
+        .bh-photon {
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 1.5px solid rgba(200, 240, 255, 0.95);
+            box-shadow: 
+                0 0 10px 1px rgba(120, 200, 255, 1),
+                0 0 20px 3px rgba(0, 150, 255, 0.75),
+                inset 0 0 8px rgba(120, 200, 255, 0.75);
+            z-index: 5;
+            animation: bh-photon-pulse 2.5s ease-in-out infinite alternate;
+        }
+        @keyframes bh-photon-pulse {
+            0% {
+                box-shadow: 
+                    0 0 7px 1px rgba(120, 200, 255, 0.8),
+                    0 0 12px 2px rgba(0, 150, 255, 0.55),
+                    inset 0 0 5px rgba(120, 200, 255, 0.65);
+            }
+            100% {
+                box-shadow: 
+                    0 0 12px 3px rgba(120, 200, 255, 1),
+                    0 0 26px 5px rgba(0, 150, 255, 0.95),
+                    inset 0 0 10px rgba(120, 200, 255, 0.95);
+            }
+        }
+
+        /* 9. DISCO FRONTAL */
+        .bh-disk-front {
+            position: absolute;
+            width: 88px;
+            height: 10px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(ellipse at center,
+                rgba(255, 255, 255, 0.55) 0%,
+                rgba(200, 240, 255, 0.45) 20%,
+                rgba(0, 180, 255, 0.3) 45%,
+                rgba(0, 100, 255, 0.15) 70%,
+                transparent 95%);
+            border-radius: 50%;
+            filter: blur(1.5px);
+            box-shadow: 0 0 25px rgba(0, 180, 255, 0.4);
+            z-index: 4;
+        }
+
+        /* 10. FLARE CENTRAL */
+        .bh-flare {
+            position: absolute;
+            width: 56px;
+            height: 2px;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(ellipse at center,
+                rgba(255, 255, 255, 1) 0%,
+                rgba(200, 240, 255, 0.9) 30%,
+                rgba(0, 150, 255, 0.4) 60%,
+                transparent 100%);
+            border-radius: 50%;
+            filter: blur(1.5px);
+            z-index: 6;
+            animation: bh-flare-pulse 2s ease-in-out infinite alternate;
+        }
+        @keyframes bh-flare-pulse {
+            0% { opacity: 0.7; transform: translate(-50%, -50%) scaleX(0.9); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scaleX(1.15); }
+        }
+
+        /* 11. PARTÍCULAS SENDO SUGADAS - LENTAS E SUAVES */
+        .bh-particles {
+            position: absolute;
+            inset: 0;
+            z-index: 7;
+            pointer-events: none;
+            overflow: visible;
+        }
+        .bh-particle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 2px;
+            background: #cceeff;
+            border-radius: 50%;
+            box-shadow: 
+                0 0 4px rgba(150, 220, 255, 1),
+                0 0 8px rgba(0, 150, 255, 0.7);
+            opacity: 0;
+            will-change: transform, opacity;
+            transform-origin: center center;
+            animation: bh-particle-suck 10s linear infinite;
+        }
+        @keyframes bh-particle-suck {
+            0% {
+                transform: rotate(var(--angle)) translateX(55px) rotate(calc(-1 * var(--angle)));
+                opacity: 0;
+            }
+            25% {
+                opacity: 0.7;
+            }
+            85% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: rotate(calc(var(--angle) + 360deg)) translateX(16px) rotate(calc(-1 * (var(--angle) + 360deg)));
+                opacity: 0;
+            }
+        }
+
+        /* ESTRELAS AO FUNDO */
+        .bh-stars {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            overflow: hidden;
+        }
+        .bh-star {
+            position: absolute;
+            width: 1.5px;
+            height: 1.5px;
+            background: #fff;
+            border-radius: 50%;
+            animation: bh-twinkle 4s infinite ease-in-out;
+        }
+        @keyframes bh-twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.3); }
+        }
+
+        /* BURACO NEGRO PEQUENO (footer) */
+        .bh-sm { width: 60px; height: 60px; }
+        .bh-sm .bh-disk-back { width: 58px; height: 8px; }
+        .bh-sm .bh-stream { width: 56px; height: 56px; }
+        .bh-sm .bh-lens-arc-top { width: 32px; height: 16px; transform: translate(-50%, -78%); }
+        .bh-sm .bh-lens-arc-bottom { width: 32px; height: 16px; transform: translate(-50%, -22%); }
+        .bh-sm .bh-lens { width: 34px; height: 34px; }
+        .bh-sm .bh-core { width: 20px; height: 20px; }
+        .bh-sm .bh-photon { width: 24px; height: 24px; }
+        .bh-sm .bh-disk-front { width: 58px; height: 7px; }
+        .bh-sm .bh-flare { width: 38px; height: 1.5px; }
+        .bh-sm .bh-glow { inset: -14px; }
+
+        /* NAV */
+        nav { display: flex; gap: 35px; }
+        nav a { 
+            font-size: 11px; 
+            font-weight: 600; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            color: var(--gray); 
+            transition: 0.3s; 
+            position: relative;
+        }
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--blue);
+            transition: width 0.3s ease;
+        }
+        nav a:hover { color: var(--text); }
+        nav a:hover::after { width: 100%; }
+
+        .header-social { display: flex; gap: 12px; align-items: center; }
+        .header-social a { 
+            display: flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--border);
+            transition: 0.3s; color: #fff;
+        }
+        .header-social a:hover { 
+            border-color: var(--blue); 
+            color: var(--blue); 
+            transform: translateY(-2px); 
+            box-shadow: 0 0 15px var(--blue-glow); 
+        }
+        .header-social svg { width: 18px; height: 18px; fill: currentColor; }
+
+        /* HERO */
+        .hero {
+            height: 100vh;
+            min-height: 700px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 5%;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('hero.jpg') no-repeat center center/cover;
+            z-index: -2;
+            filter: contrast(1.1) saturate(1.1);
+            will-change: transform;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to right, rgba(3,3,3,0.98) 15%, rgba(3,3,3,0.4) 60%, rgba(3,3,3,0.9) 100%);
+            z-index: -1;
+        }
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            box-shadow: inset 0 0 180px rgba(0,0,0,0.9);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%;
+            height: 60%;
+            background: linear-gradient(to bottom,
+                transparent 0%,
+                rgba(3, 3, 3, 0.05) 20%,
+                rgba(3, 3, 3, 0.15) 40%,
+                rgba(3, 3, 3, 0.35) 55%,
+                rgba(3, 3, 3, 0.6) 70%,
+                rgba(3, 3, 3, 0.85) 85%,
+                #030303 100%);
+            pointer-events: none;
+            z-index: 3;
+        }
+        .hero-content { position: relative; z-index: 5; }
+        .hero h1 { 
+            font-size: clamp(70px, 13vw, 180px); 
+            font-weight: 800; 
+            line-height: 0.85; 
+            letter-spacing: -5px; 
+            margin: 15px 0;
+            animation: slideUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+        .hero h1 span { color: var(--blue); text-shadow: 0 0 50px var(--blue-glow); }
+        .hero .subtitle { 
+            font-size: 12px; 
+            letter-spacing: 8px; 
+            text-transform: uppercase; 
+            color: var(--gray); 
+            font-weight: 500; 
+            animation: slideUp 1.2s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            opacity: 0; 
+            transform: translateY(30px); 
+        }
+        
+        .hero-buttons { 
+            margin-top: 50px; 
+            display: flex; 
+            gap: 15px; 
+            flex-wrap: wrap; 
+            animation: slideUp 1.2s 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            opacity: 0; 
+            transform: translateY(20px); 
+        }
+        .btn { 
+            display: inline-flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 10px;
+            padding: 18px 40px; 
+            border: 1px solid var(--border); 
+            border-radius: 50px; 
+            font-size: 11px; 
+            font-weight: 700; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); 
+            cursor: pointer; 
+            background: transparent; 
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .btn-primary { 
+            background: var(--blue); 
+            border-color: var(--blue); 
+            box-shadow: 0 0 25px var(--blue-glow); 
+        }
+        .btn-primary:hover { 
+            background: transparent; 
+            color: var(--blue); 
+            box-shadow: 0 0 40px var(--blue-glow); 
+            transform: translateY(-3px); 
+        }
+        .btn:hover { 
+            border-color: var(--blue); 
+            color: var(--blue); 
+            transform: translateY(-3px); 
+            box-shadow: 0 0 20px rgba(0, 85, 255, 0.2);
+        }
+
+        @keyframes slideUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* SEÇÕES */
+        section { 
+            padding: 140px 5%; 
+            position: relative; 
+            z-index: 2;
+            background: transparent;
+        }
+
+        .section-title { 
+            font-size: clamp(38px, 5vw, 64px); 
+            font-weight: 800; 
+            margin-bottom: 60px; 
+            letter-spacing: -2px; 
+            line-height: 1.05; 
+            max-width: 900px;
+        }
+        .section-title span { 
+            color: var(--blue); 
+            text-shadow: 0 0 30px var(--blue-glow), 0 0 60px rgba(0, 85, 255, 0.3); 
+        }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 70px; align-items: center; }
+        .grid-exp { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 50px; align-items: start; }
+        .grid-booking { display: grid; grid-template-columns: 1fr 1.5fr 1fr; gap: 50px; align-items: center; }
+
+        /* ABOUT */
+        #about {
+            margin-top: -120px;
+            padding-top: 240px;
+        }
+
+        .about-text p { 
+            margin-bottom: 20px; 
+            font-size: 15px; 
+            color: #b5b5b5; 
+            font-weight: 300; 
+            line-height: 1.8;
+        }
+
+        .about-details {
+            margin-top: 45px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .about-detail-card {
+            background: linear-gradient(145deg, rgba(0, 85, 255, 0.05) 0%, rgba(0, 85, 255, 0.01) 100%);
+            border: 1px solid rgba(0, 85, 255, 0.15);
+            border-radius: 12px;
+            padding: 18px 22px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+        .about-detail-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 3px; height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--blue), transparent);
+            box-shadow: 0 0 15px var(--blue-glow);
+        }
+        .about-detail-card:hover {
+            border-color: var(--blue);
+            background: rgba(0, 85, 255, 0.08);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 85, 255, 0.15);
+        }
+        .about-detail-card h4 {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            color: var(--blue);
+            margin-bottom: 8px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .about-detail-card h4::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--blue);
+            box-shadow: 0 0 10px var(--blue-glow);
+        }
+        .about-detail-card p {
+            margin-bottom: 0;
+            font-size: 14px;
+            color: #e0e0e0;
+            letter-spacing: 0.3px;
+            line-height: 1.5;
+        }
+
+        .about-image { position: relative; }
+        .about-image::before {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            background: radial-gradient(circle at center, rgba(0, 85, 255, 0.15) 0%, transparent 70%);
+            filter: blur(20px);
+            z-index: -1;
+        }
+        .about-image img { 
+            width: 100%; 
+            border-radius: 15px; 
+            filter: contrast(1.05) saturate(1.05); 
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); 
+        }
+
+        /* MUSIC */
+        .music-player { 
+            background: linear-gradient(145deg, #0a0a0a 0%, #050505 100%); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; 
+            padding: 35px; 
+            transition: 0.5s; 
+            position: relative;
+            overflow: hidden;
+        }
+        .music-player::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, var(--blue), transparent);
+            opacity: 0.5;
+            box-shadow: 0 0 20px var(--blue-glow);
+        }
+        .music-player:hover { 
+            border-color: rgba(0, 85, 255, 0.4); 
+            box-shadow: 0 0 40px rgba(0, 85, 255, 0.15); 
+        }
+        .music-player-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+        .music-player-icon { 
+            width: 50px; 
+            height: 50px; 
+            background: var(--blue); 
+            border-radius: 50%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 18px; 
+            box-shadow: 0 0 25px var(--blue-glow); 
+            color: #fff;
+        }
+        .music-player-header h3 { font-size: 20px; font-weight: 700; letter-spacing: 1px; }
+        .music-player-header p { font-size: 13px; color: var(--gray); }
+        .music-links-sidebar { display: flex; flex-direction: column; gap: 12px; margin-top: 25px; }
+        .music-link-item { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 18px 25px; 
+            background: #111; 
+            border: 1px solid var(--border); 
+            border-radius: 12px; 
+            transition: all 0.3s ease; 
+        }
+        .music-link-item:hover { 
+            border-color: var(--blue); 
+            background: rgba(0, 85, 255, 0.06); 
+            transform: translateX(6px); 
+            box-shadow: -4px 0 20px rgba(0, 85, 255, 0.15);
+        }
+        .music-link-item span { 
+            font-size: 14px; 
+            font-weight: 600; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+        .music-link-item small { display: block; font-size: 11px; color: var(--gray); font-weight: 400; }
+        .music-link-item .arrow-icon {
+            width: 16px;
+            height: 16px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+        .music-link-item:hover .arrow-icon {
+            transform: translate(3px, -3px);
+        }
+        .soundcloud-embed iframe { width: 100%; height: 320px; border-radius: 12px; border: none; }
+
+        /* EXPERIENCE */
+        .exp-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 18px; }
+        .exp-card { 
+            position: relative; 
+            border-radius: 12px; 
+            overflow: hidden; 
+            height: 250px; 
+            background: #111; 
+            transition: all 0.5s ease; 
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+        .exp-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 25px 40px rgba(0,0,0,0.7), 0 0 30px rgba(0, 85, 255, 0.2); 
+        }
+        .exp-card img,
+        .exp-card video { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            filter: grayscale(60%) contrast(1.15) brightness(0.9); 
+            transition: 0.7s; 
+            display: block;
+        }
+        .exp-card:hover img,
+        .exp-card:hover video { 
+            filter: grayscale(0%) contrast(1.05) brightness(1) saturate(1.1); 
+            transform: scale(1.1); 
+        }
+        .exp-card-info { 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            width: 100%; 
+            padding: 22px 20px; 
+            background: linear-gradient(to top, rgba(0,0,0,0.98), transparent); 
+            z-index: 2;
+        }
+        .exp-card-info h4 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .exp-card-info p { font-size: 11px; color: var(--gray); margin-top: 3px; }
+
+        /* LIVE-UP */
+        .lineup-container { position: relative; }
+        .lineup-title { 
+            font-size: 11px; 
+            letter-spacing: 4px; 
+            color: var(--blue); 
+            text-transform: uppercase; 
+            margin-bottom: 25px; 
+            display: block; 
+            font-weight: 700;
+            text-shadow: 0 0 20px var(--blue-glow);
+            position: relative;
+            padding-left: 20px;
+        }
+        .lineup-title::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 50%;
+            width: 12px; height: 2px;
+            background: var(--blue);
+            box-shadow: 0 0 10px var(--blue-glow);
+            transform: translateY(-50%);
+        }
+        .lineup-list { list-style: none; counter-reset: lineup; }
+        .lineup-list li { 
+            font-size: 15px; 
+            color: #ddd; 
+            margin-bottom: 4px; 
+            padding: 12px 16px 12px 40px;
+            transition: all 0.3s ease; 
+            position: relative;
+            border-radius: 8px;
+            counter-increment: lineup;
+            cursor: default;
+            background: linear-gradient(90deg, transparent 0%, rgba(0, 85, 255, 0.02) 100%);
+        }
+        .lineup-list li::before {
+            content: counter(lineup, decimal-leading-zero);
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--blue);
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--blue-glow);
+            font-family: 'Inter', sans-serif;
+        }
+        .lineup-list li::after {
+            content: '';
+            position: absolute;
+            left: 32px;
+            top: 20%;
+            height: 60%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(0, 85, 255, 0.4), transparent);
+        }
+        .lineup-list li:hover { 
+            color: #fff; 
+            background: linear-gradient(90deg, rgba(0, 85, 255, 0.08) 0%, transparent 100%);
+            padding-left: 46px;
+            border-left: 2px solid var(--blue);
+        }
+
+        /* SEÇÃO VÍDEO */
+        .video-section {
+            position: relative;
+            min-height: 100vh;
+            padding: 0;
+            display: flex;
+            align-items: flex-end;
+            overflow: hidden;
+            z-index: 2;
+            background: #000;
+        }
+        .video-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+        .video-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.35) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+        .video-fade-top {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(to bottom,
+                #030303 0%,
+                rgba(3, 3, 3, 0.85) 25%,
+                rgba(3, 3, 3, 0.5) 55%,
+                rgba(3, 3, 3, 0.15) 80%,
+                transparent 100%);
+            pointer-events: none;
+            z-index: 4;
+        }
+        .video-fade-bottom {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%;
+            height: 320px;
+            background: linear-gradient(to top,
+                #030303 0%,
+                rgba(3, 3, 3, 0.9) 20%,
+                rgba(3, 3, 3, 0.65) 45%,
+                rgba(3, 3, 3, 0.3) 70%,
+                transparent 100%);
+            pointer-events: none;
+            z-index: 4;
+        }
+        .video-content {
+            position: relative;
+            z-index: 5;
+            padding: 60px 5% 100px;
+            max-width: 720px;
+            width: 100%;
+        }
+        .video-tag {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #fff;
+            padding: 9px 22px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.06);
+            margin-bottom: 28px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        .video-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(34px, 5vw, 72px);
+            font-weight: 800;
+            line-height: 0.95;
+            letter-spacing: -2px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+            color: #fff;
+        }
+        .video-title span { 
+            color: var(--blue); 
+            display: block;
+            text-shadow: 0 0 40px var(--blue-glow);
+        }
+        .video-text {
+            font-size: 16px;
+            color: #d5d5d5;
+            font-weight: 300;
+            line-height: 1.75;
+            max-width: 560px;
+        }
+        .video-text strong {
+            color: #fff;
+            font-weight: 500;
+        }
+
+        /* GALERIA */
+        .gallery-grid { 
+            display: grid; 
+            grid-template-columns: repeat(12, 1fr); 
+            grid-auto-rows: 200px;
+            gap: 16px;
+        }
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.05) saturate(0.9);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            display: block;
+        }
+        .gallery-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0, 85, 255, 0.4) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+        }
+        .gallery-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6), 0 0 40px rgba(0, 85, 255, 0.3);
+            z-index: 10;
+        }
+        .gallery-item:hover img {
+            filter: contrast(1) saturate(1.2) brightness(1.05);
+            transform: scale(1.08);
+        }
+        .gallery-item:hover::after {
+            opacity: 1;
+        }
+        .gallery-item:nth-child(1) { grid-column: span 7; grid-row: span 3; }
+        .gallery-item:nth-child(2) { grid-column: span 5; grid-row: span 2; }
+        .gallery-item:nth-child(3) { grid-column: span 5; grid-row: span 1; }
+        .gallery-item:nth-child(4) { grid-column: span 12; grid-row: span 2; }
+
+        /* BOOKING */
+        .booking-info { display: flex; flex-direction: column; gap: 18px; }
+        .booking-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            background: linear-gradient(145deg, #0a0a0a 0%, #050505 100%); 
+            border: 1px solid var(--border); 
+            padding: 26px 30px; 
+            border-radius: 15px; 
+            transition: 0.4s; 
+            gap: 20px;
+        }
+        .booking-item:hover { 
+            border-color: var(--blue); 
+            box-shadow: 0 0 30px rgba(0, 85, 255, 0.15); 
+            background: rgba(0, 85, 255, 0.03); 
+        }
+        .booking-left {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .booking-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: 0.3s;
+        }
+        .booking-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+        .booking-icon-whats {
+            background: rgba(37, 211, 102, 0.1);
+            color: #25D366;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+        }
+        .booking-icon-mail {
+            background: rgba(0, 85, 255, 0.1);
+            color: var(--blue-light);
+            border: 1px solid rgba(0, 85, 255, 0.3);
+        }
+        .booking-item:hover .booking-icon-whats {
+            background: rgba(37, 211, 102, 0.2);
+            box-shadow: 0 0 20px rgba(37, 211, 102, 0.4);
+        }
+        .booking-item:hover .booking-icon-mail {
+            background: rgba(0, 85, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 85, 255, 0.4);
+        }
+        .booking-item span { 
+            font-size: 15px; 
+            font-weight: 500; 
+            letter-spacing: 0.3px; 
+        }
+        .btn-copy { 
+            background: transparent; 
+            color: var(--blue); 
+            border: 1px solid var(--blue); 
+            padding: 10px 22px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            font-size: 10px; 
+            letter-spacing: 1.5px; 
+            transition: all 0.15s ease; 
+            text-transform: uppercase; 
+            flex-shrink: 0;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
+            min-width: 90px;
+        }
+        .btn-copy:hover { 
+            background: var(--blue); 
+            color: #fff; 
+            box-shadow: 0 0 25px var(--blue-glow); 
+        }
+        .btn-copy.copied {
+            background: var(--blue);
+            color: #fff;
+            border-color: var(--blue);
+            box-shadow: 0 0 25px var(--blue-glow);
+        }
+
+        /* FOOTER */
+        footer { 
+            padding: 70px 5% 50px; 
+            border-top: 1px solid var(--border); 
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            align-items: center;
+            gap: 30px;
+            font-size: 11px; 
+            color: var(--gray); 
+            letter-spacing: 1.5px; 
+            text-transform: uppercase; 
+            position: relative;
+            z-index: 2;
+        }
+        .footer-logo-wrap {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .footer-logo { 
+            font-family: 'Syne', sans-serif;
+            font-size: 20px; 
+            font-weight: 800; 
+            color: #fff; 
+            letter-spacing: 3px;
+        }
+        .footer-center { text-align: center; }
+        .footer-right { text-align: right; }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(60px);
+            transition: opacity 1.4s ease, transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, opacity;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .grid-2, .grid-exp, .grid-booking { grid-template-columns: 1fr; gap: 40px; }
+            .grid-exp { gap: 30px; }
+            footer { grid-template-columns: 1fr; text-align: center; }
+            footer .footer-right { text-align: center; }
+            .footer-logo-wrap { justify-content: center; }
+            .about-details { grid-template-columns: 1fr; }
+            .gallery-grid {
+                grid-template-columns: repeat(6, 1fr);
+                grid-auto-rows: 180px;
+            }
+            .gallery-item:nth-child(1) { grid-column: span 6; grid-row: span 3; }
+            .gallery-item:nth-child(2) { grid-column: span 3; grid-row: span 2; }
+            .gallery-item:nth-child(3) { grid-column: span 3; grid-row: span 2; }
+            .gallery-item:nth-child(4) { grid-column: span 6; grid-row: span 2; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 18px 20px; }
+            nav { display: none; }
+            .logo { font-size: 20px; letter-spacing: 3px; }
+            .logo-container { gap: 10px; }
+
+            .hero { padding: 0 20px; min-height: 100vh; }
+            .hero h1 { font-size: clamp(56px, 17vw, 90px); letter-spacing: -4px; }
+            .hero .subtitle { font-size: 11px; letter-spacing: 5px; }
+            .hero-buttons { margin-top: 40px; gap: 12px; }
+
+            section { padding: 90px 20px; }
+            #about { padding-top: 180px; margin-top: -80px; }
+            .section-title { font-size: clamp(32px, 8vw, 46px); letter-spacing: -1.5px; margin-bottom: 45px; }
+
+            .about-details { gap: 12px; margin-top: 35px; }
+            .about-detail-card { padding: 16px 18px; }
+
+            .music-player { padding: 24px; }
+            .soundcloud-embed iframe { height: 250px; }
+
+            .exp-cards { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+            .exp-card { height: 200px; }
+
+            .gallery-grid {
+                grid-template-columns: repeat(4, 1fr);
+                grid-auto-rows: 140px;
+                gap: 12px;
+            }
+            .gallery-item:nth-child(1) { grid-column: span 4; grid-row: span 3; }
+            .gallery-item:nth-child(2) { grid-column: span 2; grid-row: span 2; }
+            .gallery-item:nth-child(3) { grid-column: span 2; grid-row: span 2; }
+            .gallery-item:nth-child(4) { grid-column: span 4; grid-row: span 2; }
+
+            .video-section { min-height: 85vh; }
+            .video-content { padding: 50px 20px 80px; }
+            .video-fade-top { height: 100px; }
+            .video-fade-bottom { height: 220px; }
+
+            .booking-item { flex-direction: column; gap: 16px; text-align: center; padding: 22px 20px; }
+            .booking-left { flex-direction: column; text-align: center; gap: 10px; }
+            .grid-booking { text-align: center; }
+            .grid-booking > div:last-child { text-align: center !important; }
+
+            .cursor-glow { display: none; }
+            footer { padding: 50px 20px 40px; }
+
+            .btn-primary { 
+                box-shadow: 0 0 30px var(--blue-glow-strong), 0 0 60px rgba(0, 85, 255, 0.3);
+            }
+            .section-title span {
+                text-shadow: 0 0 20px var(--blue-glow-strong), 0 0 50px rgba(0, 85, 255, 0.5);
+            }
+            .video-title span {
+                text-shadow: 0 0 30px var(--blue-glow-strong), 0 0 60px rgba(0, 85, 255, 0.4);
+            }
+        }
+
+        @media (hover: none) and (pointer: coarse) {
+            .exp-card img,
+            .exp-card video {
+                filter: grayscale(0%) contrast(1.05) brightness(1) saturate(1.1) !important;
+            }
+            .exp-card {
+                box-shadow: 0 12px 28px rgba(0,0,0,0.5), 0 0 22px rgba(0, 85, 255, 0.15) !important;
+            }
+
+            .gallery-item img {
+                filter: contrast(1.02) saturate(1.05) brightness(1) !important;
+            }
+            .gallery-item {
+                box-shadow: 0 15px 35px rgba(0,0,0,0.5), 0 0 20px rgba(0, 85, 255, 0.12) !important;
+            }
+            .gallery-item::after {
+                opacity: 0.5;
+            }
+
+            .about-image img {
+                filter: contrast(1.05) saturate(1.05) !important;
+                box-shadow: 0 15px 40px rgba(0, 85, 255, 0.2) !important;
+            }
+
+            .music-player {
+                border-color: rgba(0, 85, 255, 0.3);
+                box-shadow: 0 0 30px rgba(0, 85, 255, 0.1);
+            }
+
+            .about-detail-card {
+                border-color: rgba(0, 85, 255, 0.3);
+                background: rgba(0, 85, 255, 0.06);
+            }
+
+            .exp-card:active, .gallery-item:active {
+                transform: scale(0.97);
+                transition: transform 0.15s ease;
+            }
+            .btn:active { transform: scale(0.96); transition: transform 0.15s; }
+            .music-link-item:active { background: rgba(0, 85, 255, 0.1); }
+            .booking-item:active { border-color: var(--blue); }
+            .about-detail-card:active { border-color: var(--blue); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-glow"></div>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo">LESSA</div>
+            <div class="bh" data-bh>
+                <div class="bh-stars"></div>
+                <div class="bh-glow"></div>
+                <div class="bh-disk-back"></div>
+                <div class="bh-stream bh-stream-1"></div>
+                <div class="bh-lens-arc-top"></div>
+                <div class="bh-lens"></div>
+                <div class="bh-core"></div>
+                <div class="bh-photon"></div>
+                <div class="bh-lens-arc-bottom"></div>
+                <div class="bh-disk-front"></div>
+                <div class="bh-stream bh-stream-2"></div>
+                <div class="bh-flare"></div>
+                <div class="bh-particles"></div>
+            </div>
+        </div>
+        <nav>
+            <a href="#hero">Home</a>
+            <a href="#about">Sobre</a>
+            <a href="#music">Música</a>
+            <a href="#experience">Trajetória</a>
+            <a href="#gallery">Galeria</a>
+            <a href="#booking">Booking</a>
+        </nav>
+        <div class="header-social">
+            <a href="https://instagram.com/darlylessa" target="_blank" title="Instagram">
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+            </a>
+            <a href="https://soundcloud.com/lessa7" target="_blank" title="SoundCloud">
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="1" y="13.5" width="1.1" height="4" rx="0.55"/>
+                    <rect x="3" y="11.5" width="1.1" height="6" rx="0.55"/>
+                    <rect x="5" y="10" width="1.1" height="7.5" rx="0.55"/>
+                    <rect x="7" y="11" width="1.1" height="6.5" rx="0.55"/>
+                    <rect x="9" y="10" width="1.1" height="7.5" rx="0.55"/>
+                    <path d="M11.8 10h3.7c2.5 0 4.5 2 4.5 4.5s-2 4.5-4.5 4.5h-3.7V10z"/>
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <section class="hero" id="hero">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <p class="subtitle">DJ / Producer</p>
+            <h1>LESSA<span></span></h1>
+            <p class="subtitle">House Music · São Luís / Brazil</p>
+            <div class="hero-buttons">
+                <a href="#music" class="btn btn-primary">Ouvir Sets</a>
+                <a href="#booking" class="btn">Booking</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="reveal">
+        <h2 class="section-title">Uma identidade <span>sonora própria</span></h2>
+        <div class="grid-2">
+            <div class="about-text">
+                <p>Dj nascido em São Luís, Maranhão, Darly Lessa assina o projeto LESSA, com a sua sonoridade focada na house music e suas vertentes.</p>
+                <p>Formado pela Casa Groove, em 2020 fez sua estreia nas pistas vencendo o contest da produtora Aconselho, uma das mais renomadas do Maranhão no seguimento da música eletrônica.</p>
+                <p>Atualmente é co-produtor da festa Braasa, junto com os DJs Jota e Alesso! A festa vem em ascensão na cena eletrônica dos Lençóis Maranhenses, mais precisamente no paraíso do Atins.</p>
+                <p>Lessa já dividiu line-up com grandes nomes da cena como Tessuto, Capslook, Meca, Spaniol, Tahira, Sheldon, Viot, entre outros!</p>
+                <p>Atualmente faz parte do coletivo Explore DJs, sendo uma das referências do selo.</p>
+                
+                <div class="about-details">
+                    <div class="about-detail-card">
+                        <h4>Influências</h4>
+                        <p>Reboot, Nicky Curly, Marco Carola</p>
+                    </div>
+                    <div class="about-detail-card">
+                        <h4>Gêneros</h4>
+                        <p>House · Deep · Tech House · Minimal</p>
+                    </div>
+                    <div class="about-detail-card">
+                        <h4>Origem</h4>
+                        <p>São Luís - MA</p>
+                    </div>
+                    <div class="about-detail-card">
+                        <h4>Tempo de Pista</h4>
+                        <p>Desde 2018</p>
+                    </div>
+                </div>
+            </div>
+            <div class="about-image">
+                <img src="about.jpg" alt="Lessa DJ">
+            </div>
+        </div>
+    </section>
+
+    <section id="music" class="reveal">
+        <h2 class="section-title">The Sound <span>of Lessa</span></h2>
+        <div class="grid-2">
+            <div>
+                <p style="color: #aaa; font-size: 15px; margin-bottom: 30px; font-weight: 300; line-height: 1.8;">Uma seleção de sets que traduzem a sua identidade na house music e suas vertentes. Ouça, sinta e mergulhe na atmosfera.</p>
+                <a href="https://soundcloud.com/lessa7" target="_blank" class="btn btn-primary">Ouvir no SoundCloud</a>
+            </div>
+            <div class="music-player">
+                <div class="music-player-header">
+                    <div class="music-player-icon">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M8 5v14l11-7z"/></svg>
+                    </div>
+                    <div>
+                        <h3>LESSA</h3>
+                        <p>Aquarela do Brasil (Zabot Remix)</p>
+                    </div>
+                </div>
+                <div class="soundcloud-embed">
+                    <iframe width="100%" height="300" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/djzabot/aquareladobrasil&color=%230055ff&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true"></iframe>
+                </div>
+                <div class="music-links-sidebar">
+                    <a href="https://soundcloud.com/lessa7" target="_blank" class="music-link-item">
+                        <div>
+                            <span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <rect x="1" y="13.5" width="1.1" height="4" rx="0.55"/>
+                                    <rect x="3" y="11.5" width="1.1" height="6" rx="0.55"/>
+                                    <rect x="5" y="10" width="1.1" height="7.5" rx="0.55"/>
+                                    <rect x="7" y="11" width="1.1" height="6.5" rx="0.55"/>
+                                    <rect x="9" y="10" width="1.1" height="7.5" rx="0.55"/>
+                                    <path d="M11.8 10h3.7c2.5 0 4.5 2 4.5 4.5s-2 4.5-4.5 4.5h-3.7V10z"/>
+                                </svg>
+                                SoundCloud
+                            </span>
+                            <small>@lessa7</small>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                    <a href="https://instagram.com/darlylessa" target="_blank" class="music-link-item">
+                        <div>
+                            <span>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                                Instagram
+                            </span>
+                            <small>@darlylessa</small>
+                        </div>
+                        <svg class="arrow-icon" viewBox="0 0 24 24"><path d="M7 17L17 7M17 7H9M17 7v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="reveal">
+        <h2 class="section-title">Da cena local <span>ao lençóis</span></h2>
+        <div class="grid-exp">
+            <div>
+                <p style="color: #aaa; font-size: 15px; margin-bottom: 30px; font-weight: 300; line-height: 1.8;">Festas, eventos e conexões que fazem parte da minha trajetória.</p>
+                <a href="#gallery" class="btn">Ver Galeria</a>
+            </div>
+            <div class="exp-cards">
+                <div class="exp-card">
+                    <img src="foto1.jpg" alt="Tríplice">
+                    <div class="exp-card-info"><h4>Tríplice Produtora</h4><p>São Luís - MA</p></div>
+                </div>
+                <div class="exp-card">
+                    <img src="foto2.jpg" alt="Aconselho">
+                    <div class="exp-card-info"><h4>Aconselho</h4><p>São Luís - MA</p></div>
+                </div>
+                <div class="exp-card">
+                    <img src="foto3.jpg" alt="Meludo">
+                    <div class="exp-card-info"><h4>Meludo</h4><p>São Luís - MA</p></div>
+                </div>
+                <div class="exp-card">
+                    <img src="foto4.jpg" alt="Atins Kite Fest">
+                    <div class="exp-card-info"><h4>Atins Kite Fest</h4><p>Atins - MA</p></div>
+                </div>
+                <div class="exp-card">
+                    <video autoplay loop muted playsinline webkit-playsinline preload="auto">
+                        <source src="reveillon.mp4" type="video/mp4">
+                    </video>
+                    <div class="exp-card-info"><h4>Réveillon dos Lençóis</h4><p>Lençóis Maranhenses - MA</p></div>
+                </div>
+            </div>
+            <div class="lineup-container">
+                <span class="lineup-title">Live-up com</span>
+                <ul class="lineup-list">
+                    <li>Tessuto</li>
+                    <li>Capslook</li>
+                    <li>Meca</li>
+                    <li>Spaniol</li>
+                    <li>Tahira</li>
+                    <li>Sheldon</li>
+                    <li>Viot</li>
+                    <li>entre outros</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="maranhense" class="reveal video-section">
+        <video class="video-bg" autoplay loop muted playsinline webkit-playsinline preload="auto">
+            <source src="evento.mp4" type="video/mp4">
+        </video>
+        <div class="video-fade-top"></div>
+        <div class="video-fade-bottom"></div>
+        <div class="video-content">
+            <span class="video-tag">Música Maranhense</span>
+            <h2 class="video-title">Raízes que <span>ecoam na pista</span></h2>
+            <p class="video-text">Do tambor de crioula ao groove do house, o Maranhão dança em cada batida. Uma viagem sonora onde a <strong>tradição encontra o futuro</strong>. A pista se torna casa.</p>
+        </div>
+    </section>
+
+    <section id="gallery" class="reveal">
+        <h2 class="section-title">Vibração, pista, <span>conexão</span></h2>
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="foto1.jpg" alt="Galeria 1"></div>
+            <div class="gallery-item"><img src="foto2.jpg" alt="Galeria 2"></div>
+            <div class="gallery-item"><img src="foto3.jpg" alt="Galeria 3"></div>
+            <div class="gallery-item"><img src="foto4.jpg" alt="Galeria 4"></div>
+        </div>
+    </section>
+
+    <section id="booking" class="reveal">
+        <h2 class="section-title">Let's work <span>together</span></h2>
+        <div class="grid-booking">
+            <div>
+                <p style="color: #aaa; font-size: 15px; font-weight: 300; line-height: 1.8;">Clubs · Festivais · Private Events · Sunsets</p>
+            </div>
+            <div class="booking-info">
+                <div class="booking-item">
+                    <div class="booking-left">
+                        <div class="booking-icon booking-icon-whats">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                        </div>
+                        <span>WhatsApp: (98) 98872-7018</span>
+                    </div>
+                    <button class="btn-copy" onclick="copiarTexto('98988727018', this)">Copiar</button>
+                </div>
+                <div class="booking-item">
+                    <div class="booking-left">
+                        <div class="booking-icon booking-icon-mail">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                        </div>
+                        <span>darlysonlessa@gmail.com</span>
+                    </div>
+                    <button class="btn-copy" onclick="copiarTexto('darlysonlessa@gmail.com', this)">Copiar</button>
+                </div>
+            </div>
+            <div style="text-align: right;">
+                <a href="https://wa.me/5598988727018" target="_blank" class="btn btn-primary">Entrar em Contato</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo-wrap">
+            <div class="footer-logo">LESSA</div>
+            <div class="bh bh-sm">
+                <div class="bh-stars"></div>
+                <div class="bh-glow"></div>
+                <div class="bh-disk-back"></div>
+                <div class="bh-stream bh-stream-1"></div>
+                <div class="bh-lens-arc-top"></div>
+                <div class="bh-lens"></div>
+                <div class="bh-core"></div>
+                <div class="bh-photon"></div>
+                <div class="bh-lens-arc-bottom"></div>
+                <div class="bh-disk-front"></div>
+                <div class="bh-stream bh-stream-2"></div>
+                <div class="bh-flare"></div>
+                <div class="bh-particles"></div>
+            </div>
+        </div>
+        <div class="footer-center">© 2026. Todos os direitos reservados.</div>
+        <div class="footer-right">São Luís - MA · Atins - MA · Ceará</div>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(s => observer.observe(s));
+
+        // Gerar estrelas nos buracos negros
+        document.querySelectorAll('.bh-stars').forEach(container => {
+            for (let i = 0; i < 12; i++) {
+                const star = document.createElement('div');
+                star.classList.add('bh-star');
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 4}s`;
+                container.appendChild(star);
+            }
+        });
+
+        // ===== PARTÍCULAS SENDO SUGADAS - LENTAS E SUAVES =====
+        document.querySelectorAll('.bh-particles').forEach(container => {
+            const particleCount = 6;
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('bh-particle');
+                const angle = Math.random() * 360;
+                particle.style.setProperty('--angle', `${angle}deg`);
+                const duration = 10 + Math.random() * 6;
+                particle.style.animationDuration = `${duration}s`;
+                particle.style.animationDelay = `${Math.random() * 12}s`;
+                container.appendChild(particle);
+            }
+        });
+
+        // ===== CURSOR GLOW (desktop) =====
+        if (window.matchMedia('(hover: hover)').matches) {
+            const glow = document.querySelector('.cursor-glow');
+            let mouseX = window.innerWidth / 2;
+            let mouseY = window.innerHeight / 2;
+            let glowX = mouseX;
+            let glowY = mouseY;
+
+            document.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+            });
+
+            function animateGlow() {
+                glowX += (mouseX - glowX) * 0.08;
+                glowY += (mouseY - glowY) * 0.08;
+                glow.style.left = `${glowX}px`;
+                glow.style.top = `${glowY}px`;
+                requestAnimationFrame(animateGlow);
+            }
+            animateGlow();
+        } else {
+            document.querySelector('.cursor-glow').style.display = 'none';
+        }
+
+        // ===== FOLLOW SUAVE DO CURSOR NO BURACO NEGRO =====
+        document.querySelectorAll('[data-bh]').forEach(bh => {
+            let targetRotX = 0, targetRotY = 0;
+            let currentRotX = 0, currentRotY = 0;
+
+            document.addEventListener('mousemove', (e) => {
+                const rect = bh.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const deltaX = e.clientX - centerX;
+                const deltaY = e.clientY - centerY;
+                const maxInfluence = 300;
+                targetRotY = Math.max(-12, Math.min(12, (deltaX / maxInfluence) * 12));
+                targetRotX = Math.max(-12, Math.min(12, -(deltaY / maxInfluence) * 12));
+            });
+
+            function animateBh() {
+                currentRotX += (targetRotX - currentRotX) * 0.05;
+                currentRotY += (targetRotY - currentRotY) * 0.05;
+                bh.style.transform = `perspective(400px) rotateX(${currentRotX}deg) rotateY(${currentRotY}deg)`;
+                requestAnimationFrame(animateBh);
+            }
+            animateBh();
+        });
+
+        // ===== PARALLAX DO HERO =====
+        const heroBg = document.getElementById('heroBg');
+        let ticking = false;
+        window.addEventListener('scroll', () => {
+            if (!ticking && heroBg && window.scrollY < window.innerHeight) {
+                window.requestAnimationFrame(() => {
+                    heroBg.style.transform = `translateY(${window.scrollY * 0.3}px) scale(1.05)`;
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        });
+
+        // ===== FORÇAR VÍDEOS A RODAREM =====
+        document.querySelectorAll('video').forEach(video => {
+            video.muted = true;
+            video.setAttribute('playsinline', '');
+            video.setAttribute('webkit-playsinline', '');
+            video.setAttribute('muted', '');
+            video.setAttribute('loop', '');
+
+            const tryPlay = () => {
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(() => {
+                        const forcePlay = () => video.play().catch(() => {});
+                        document.addEventListener('touchstart', forcePlay, { once: true, passive: true });
+                        document.addEventListener('click', forcePlay, { once: true, passive: true });
+                    });
+                }
+            };
+
+            if (video.readyState >= 2) {
+                tryPlay();
+            } else {
+                video.addEventListener('loadeddata', tryPlay);
+                video.addEventListener('canplay', tryPlay);
+            }
+
+            const videoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        video.play().catch(() => {});
+                    }
+                });
+            }, { threshold: 0.1 });
+            videoObserver.observe(video);
+        });
+
+        // ===== COPIAR TEXTO - RESPOSTA IMEDIATA =====
+        function copiarTexto(texto, btn) {
+            // Feedback visual IMEDIATO no botão (antes mesmo de copiar)
+            const originalText = btn.textContent;
+            btn.textContent = 'Copiado!';
+            btn.classList.add('copied');
+            
+            // Resetar depois de 1.5s
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.remove('copied');
+            }, 1500);
+            
+            // Copiar com fallback para navegadores antigos
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(texto).catch(() => {
+                    fallbackCopy(texto);
+                });
+            } else {
+                fallbackCopy(texto);
+            }
+        }
+
+        function fallbackCopy(texto) {
+            const textarea = document.createElement('textarea');
+            textarea.value = texto;
+            textarea.style.position = 'fixed';
+            textarea.style.left = '-9999px';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            try { document.execCommand('copy'); } catch(e) {}
+            document.body.removeChild(textarea);
+        }
+    </script>
+
+</body>
+</html>
